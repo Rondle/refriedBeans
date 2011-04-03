@@ -1,2 +1,2 @@
-class CreateSeats < ActiveRecord::Migration
+class GoAWAY < ActiveRecord::Migration
 end
