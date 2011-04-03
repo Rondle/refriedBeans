@@ -2,7 +2,6 @@ class CreateMessages < ActiveRecord::Migration
   def self.up
     create_table :messages do |t|
       t.text :message
-
       t.timestamps
     end
   end

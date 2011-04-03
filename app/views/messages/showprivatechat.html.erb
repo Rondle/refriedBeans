@@ -4,11 +4,11 @@
 
 <table border=1>
   <tr>
-    <th>Seat</th>
+    <th>Seat <%= params[:to] %></th>
   </tr>
   <tr>
     <td>
-      <%= form_tag ('/messages/create') do %>
+      <%= form_tag ("/messages/create/#{params[:from]}/#{params[:to]}") do %>
 
         <%= text_area_tag(:message_output, @conversation, :size=>"75x10", :readonly=>"readonly") %>
         <br/>

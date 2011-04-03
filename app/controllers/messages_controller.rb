@@ -1,8 +1,50 @@
 class MessagesController < ApplicationController
+
+  # POST /messages
+  # POST /messages.xml
+  def createglobalmessage
+    @message = Message.new
+    @message.message = params[:g_message]
+    @message.user_id_from = params[:from]
+
+    @gconversation = Message.find_all_by_user_id_to(nil)
+
+    respond_to do |format|
+      if @message.save
+        format.html { redirect_to(seats_path) }
+      else
+        format.html { render :action => "new" }
+      end
+    end
+  end 
+
+  # POST /messages
+  # POST /messages.xml
+  def showprivatechat 
+    @messages =  Message.find_all_by_user_id_to(params[:to])  
+    
+    @messages.each do |m|   
+        @conversation = "#{@conversation}\n#{m.created_at.localtime}:#{m.user_id_from}:#{m.message}"
+    end
+    
+    respond_to do |format|
+      format.html # showprivatechat.html.erb
+      format.xml  { render :xml => @message }
+    end
+  end
+  
+  
   # GET /messages
   # GET /messages.xml
   def index
     @messages = Message.all
+    #fromID = params[:from]
+    #toId = params[:to]
+    #@conversation = Message.find_all_by_user_id_from_and_user_id_to(fromID, toID)
+    @conversation = Message.all
+    #Message.all.each {|m| @conversation << m.message if m.nil?}
+    #@conversation = Message.first.message
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,7 +69,7 @@ class MessagesController < ApplicationController
     @message = Message.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html #{ redirect_to (messages_url) } # index.html.erb #  new.html.erb
       format.xml  { render :xml => @message }
     end
   end
@@ -40,11 +82,14 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.xml
   def create
-    @message = Message.new(params[:message])
+    @message = Message.new
+    @message.message = params[:message]
+    @message.user_id_from = params[:from]
+    @message.user_id_to = params[:to]
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to(@message, :notice => 'Message was successfully created.') }
+        format.html { redirect_to(showprivatechat_path) }
         format.xml  { render :xml => @message, :status => :created, :location => @message }
       else
         format.html { render :action => "new" }

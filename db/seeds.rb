@@ -7,7 +7,9 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 @i = 1
 
-while @i<32
-	Seat.create()
+while @i<=32
+   Seat.create()
    @i=@i+1
+
+
 end

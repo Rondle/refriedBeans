@@ -1,16 +1,16 @@
 Probset3::Application.routes.draw do
+  match '/messages/create/:from/:to' => "messages#create" , :as=>"createmessage" 
+  match '/messages/private/:from/:to' => "messages#showprivatechat" , :as=>"showprivatechat" 
+  match '/messages/create/:from' => "messages#createglobalmessage", :as=>"createglobalmessage"
+
+
   resources :seats
-
   resources :messages
-
-  match '/enter' => 'seats#index'
 
 
 	resources :users
 	resource :session
-	resource :messages
-	resource :seats
-	match '/login' => "sessions#new", :as => "login"
+  match '/login' => "sessions#new", :as => "login"
   match '/logout' => "sessions#destroy", :as => "logout"
   match '/seats/sit/:id' => 'seats#sit'
   # The priority is based upon order of creation:
