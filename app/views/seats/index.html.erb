@@ -1,0 +1,93 @@
+<h1>Listing seats</h1>
+
+
+
+
+<div id="divMain">  
+<div id="divMainContent">
+
+
+<div class="seating">Seating Chart
+<hr/>
+
+<table>
+<tbody>
+<tr><th colspan="8">
+	<div class="ProfSeat">
+	<p class="SeatTakenHeading">Professor</p>
+	<a title="Seat Reserved for Professor" href=""><p class="SeatDetail"><strong>Prof. Avery</strong> </p></a> </div>
+</th></tr>
+<tr>
+    <% @seats.each do |seat| %>
+       <% if @counter > 7  %>
+         <% @counter=0 %>
+	  </tr><tr>
+	<% end %>
+	<td>
+		<% if seat.user  %><div class="SeatTaken">
+		<p class="SeatTakenHeading"><%= seat.id%></p>
+		<a title="Seat Taken By: <%= seat.user.fname %>" href=""><p class="SeatDetail"><strong><%= seat.user.fname %> <%= seat.user.lname %> </strong> </p></a>
+		<a title="Chat with <%= seat.user.fname %>" href=""><p class="SeatDetail">Chat</p></a> </div>
+		<% else %>
+		<div class="SeatOpen">
+		<p class="SeatOpenHeading"><%= seat.id%></p>
+		<p class="SeatDetail"><a title="Occupy Seat:<%= seat.id%>" href=""><%= button_to "Sit", :action => "sit", :id => seat.id %> </p></a>
+		</div>
+		<% end %> 
+	</td>
+    <% @counter+=1 %>
+    <% end %>
+</tbody>
+</table> <br/><br/>
+</div>
+
+
+<div class="chat" >The chat window:
+<hr/>
+
+<table border="0" >
+  
+    <% @seats.each do |seat| %>
+	<% if seat.user  %>
+	   <tr>
+		<td> 
+		<strong><%= seat.user.fname %>: Hi, I am <%= seat.user.fname %>!!</strong> <br/><br/>
+	   	</td>
+	   </tr>
+	<% end %>
+    <% end %>  
+  
+</table>
+</div> 
+
+
+</div>
+</div>
+
+<!-- 
+
+<table>
+  <tr>
+    <th>Seat</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @seats.each do |seat| %>
+  <tr>
+    <td><%= seat.id %></td>
+    <td><%= seat.user_id %></td>
+    <td><%= link_to 'Show', seat %></td>
+    <td><%= link_to 'Edit', edit_seat_path(seat) %></td>
+    <td><%= link_to 'Destroy', seat, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+
+<%= link_to 'New Seat', new_seat_path %>
+-->
