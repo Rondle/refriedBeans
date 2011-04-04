@@ -11,14 +11,13 @@ class SeatsController < ApplicationController
 
     @message.save
      
-    @messages = Message.find_all_by_user_id_to(nil)
-    
-    @messages.each do |m|
-      @gconversation = "#{@gconversation}\n#{m.created_at.localtime}:#{m.user_id_from}:#{m.message}"
-    end
+ #   @messages = Message.find_all_by_user_id_to(nil)
+  #   @messages.each do |m|
+  #    @gconversation = "#{@gconversation}\n#{m.created_at.localtime}:#{m.user_id_from}:#{m.message}"
+  #  end
 
     respond_to do |format|
-        format.html { render :action => "index.html.erb" }
+        format.html {redirect_to(seats_url)} #{ render :action => "index.html.erb" }
     end
   end
 
@@ -28,6 +27,11 @@ class SeatsController < ApplicationController
   def index
    @counter = 0
     @seats = Seat.all
+
+    @messages = Message.find_all_by_user_id_to(nil)
+    @messages.each do |m|
+      @gconversation = "#{@gconversation}\n#{m.created_at.localtime}:#{m.user_id_from}"
+    end
 
     respond_to do |format|
       format.html # index.html.erb
