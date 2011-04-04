@@ -3,20 +3,23 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.xml
   def createglobalmessage
+    @seats = Seat.all
     @message = Message.new
     @message.message = params[:g_message]
     @message.user_id_from = params[:from]
-
-    @gconversation = Message.find_all_by_user_id_to(nil)
+    @message.user_id_to = nil
+    @message.save
+   
+    @messages = Message.find_all_by_user_id_to(nil)
+    
+    @messages.each do |m|
+      @gconversation = "#{@gconversation}\n#{m.created_at.localtime}:#{m.user_id_from}:#{m.message}"
+    end
 
     respond_to do |format|
-      if @message.save
-        format.html { redirect_to(seats_path) }
-      else
-        format.html { render :action => "new" }
-      end
+        format.html { render :action => "index.html.erb" }
     end
-  end 
+  end
 
   # POST /messages
   # POST /messages.xml
@@ -67,7 +70,6 @@ class MessagesController < ApplicationController
   # GET /messages/new.xml
   def new
     @message = Message.new
-
     respond_to do |format|
       format.html #{ redirect_to (messages_url) } # index.html.erb #  new.html.erb
       format.xml  { render :xml => @message }

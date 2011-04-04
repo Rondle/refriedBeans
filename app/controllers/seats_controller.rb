@@ -1,8 +1,32 @@
 class SeatsController < ApplicationController
+
+  def createglobalmessage
+    @counter = 0
+    @seats = Seat.all
+
+    @message = Message.new
+    @message.message = params[:g_message]
+    @message.user_id_from = params[:from]
+    @message.user_id_to = nil
+
+    @message.save
+     
+    @messages = Message.find_all_by_user_id_to(nil)
+    
+    @messages.each do |m|
+      @gconversation = "#{@gconversation}\n#{m.created_at.localtime}:#{m.user_id_from}:#{m.message}"
+    end
+
+    respond_to do |format|
+        format.html { render :action => "index.html.erb" }
+    end
+  end
+
+
   # GET /seats
   # GET /seats.xml
   def index
-    @counter = 0
+   @counter = 0
     @seats = Seat.all
 
     respond_to do |format|
